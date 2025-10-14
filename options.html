@@ -14,42 +14,62 @@
     </header>
 
     <main>
-      <div class="option-group">
+      <div class="option-group" role="region" aria-label="Feature toggles">
         <div class="option-item">
           <div class="option-info">
             <label for="feature1">Feature 1</label>
-            <p class="description">Enable or disable feature 1</p>
+            <p class="description" id="feature1-desc">Enable or disable feature 1</p>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="feature1" checked>
-            <span class="slider"></span>
+          <label class="toggle" aria-label="Toggle feature 1">
+            <input
+              type="checkbox"
+              id="feature1"
+              checked
+              aria-label="Feature 1 toggle"
+              aria-describedby="feature1-desc">
+            <span class="slider" aria-hidden="true"></span>
           </label>
         </div>
 
         <div class="option-item">
           <div class="option-info">
             <label for="feature2">Feature 2</label>
-            <p class="description">Enable or disable feature 2</p>
+            <p class="description" id="feature2-desc">Enable or disable feature 2</p>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="feature2" checked>
-            <span class="slider"></span>
+          <label class="toggle" aria-label="Toggle feature 2">
+            <input
+              type="checkbox"
+              id="feature2"
+              checked
+              aria-label="Feature 2 toggle"
+              aria-describedby="feature2-desc">
+            <span class="slider" aria-hidden="true"></span>
           </label>
         </div>
 
         <div class="option-item">
           <div class="option-info">
             <label for="feature3">Feature 3</label>
-            <p class="description">Enable or disable feature 3</p>
+            <p class="description" id="feature3-desc">Enable or disable feature 3</p>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="feature3" checked>
-            <span class="slider"></span>
+          <label class="toggle" aria-label="Toggle feature 3">
+            <input
+              type="checkbox"
+              id="feature3"
+              checked
+              aria-label="Feature 3 toggle"
+              aria-describedby="feature3-desc">
+            <span class="slider" aria-hidden="true"></span>
           </label>
         </div>
       </div>
 
-      <div class="status-message" id="statusMessage"></div>
+      <div
+        class="status-message"
+        id="statusMessage"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"></div>
     </main>
 
     <footer>
