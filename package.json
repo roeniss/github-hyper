@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "github-hyper",
+  "description": "A basic browser extension example built with Extension.js. Perfect starting point for developers learning browser extension development with modern tooling.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "author": {
+    "name": "Your Name",
+    "email": "your@email.com",
+    "url": "https://yourwebsite.com"
+  },
+  "scripts": {
+    "dev": "extension dev",
+    "start": "extension start",
+    "build": "extension build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "extension": "^2.1.3"
+  }
+}
