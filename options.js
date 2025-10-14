@@ -54,13 +54,19 @@ function setupEventListeners() {
 }
 
 // Show status message to user
+let statusTimeout;
 function showStatus(message, type = 'success') {
+  // Clear any existing timeout to prevent race conditions
+  if (statusTimeout) {
+    clearTimeout(statusTimeout);
+  }
+
   const statusElement = document.getElementById('statusMessage');
   statusElement.textContent = message;
   statusElement.className = `status-message ${type} show`;
 
   // Hide the message after 2 seconds
-  setTimeout(() => {
+  statusTimeout = setTimeout(() => {
     statusElement.className = 'status-message';
   }, 2000);
 }
