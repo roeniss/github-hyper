@@ -30,6 +30,13 @@ header {
   text-align: center;
 }
 
+.header-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
 header h1 {
   font-size: 28px;
   font-weight: 600;
