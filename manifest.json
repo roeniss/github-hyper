@@ -2,10 +2,14 @@
   "$schema": "https://json.schemastore.org/chrome-manifest.json",
   "manifest_version": 3,
   "version": "0.0.1",
-  "name": "github-hyper",
+  "name": "GitHub Hyper",
   "description": "A basic browser extension example built with Extension.js. Perfect starting point for developers learning browser extension development with modern tooling.",
   "icons": {
     "48": "images/extension_48.png"
   },
-  "author": "Your Name"
+  "author": "Your Name",
+  "options_page": "options.html",
+  "permissions": [
+    "storage"
+  ]
 }
