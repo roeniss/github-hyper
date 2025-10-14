@@ -71,7 +71,19 @@ function showStatus(message, type = 'success') {
   }, 2000);
 }
 
-// Export function to get current settings (can be used by content scripts)
+/**
+ * Gets current settings from Chrome storage.
+ * This function can be used by content scripts or other extension scripts
+ * to retrieve user preferences.
+ *
+ * @returns {Promise<Object>} Object containing all feature settings
+ * @example
+ * // In a content script:
+ * const settings = await getSettings();
+ * if (settings.feature1) {
+ *   // Apply feature 1
+ * }
+ */
 async function getSettings() {
   try {
     return await chrome.storage.sync.get(defaultSettings);
@@ -80,3 +92,6 @@ async function getSettings() {
     return defaultSettings;
   }
 }
+
+// Make getSettings available globally for other scripts
+window.getSettings = getSettings;
