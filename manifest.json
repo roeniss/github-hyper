@@ -5,7 +5,10 @@
   "name": "GitHub Hyper",
   "description": "A basic browser extension example built with Extension.js. Perfect starting point for developers learning browser extension development with modern tooling.",
   "icons": {
-    "48": "images/extension_48.png"
+    "16": "images/icon_16.png",
+    "32": "images/icon_32.png",
+    "48": "images/icon_48.png",
+    "128": "images/icon_128.png"
   },
   "author": "Your Name",
   "options_page": "options.html",
