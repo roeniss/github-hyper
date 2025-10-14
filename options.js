@@ -1,3 +1,6 @@
+// Constants
+const STATUS_MESSAGE_DURATION = 2000; // milliseconds
+
 // Default settings - all features enabled by default
 const defaultSettings = {
   feature1: true,
@@ -82,7 +85,7 @@ function setupEventListeners() {
 
 /**
  * Displays a temporary status message to the user.
- * Automatically hides the message after 2 seconds.
+ * Automatically hides the message after STATUS_MESSAGE_DURATION milliseconds.
  * Clears any existing timeout to prevent race conditions when
  * multiple messages are triggered in quick succession.
  *
@@ -101,10 +104,10 @@ function showStatus(message, type = 'success') {
   statusElement.textContent = message;
   statusElement.className = `status-message ${type} show`;
 
-  // Hide the message after 2 seconds
+  // Hide the message after specified duration
   statusTimeout = setTimeout(() => {
     statusElement.className = 'status-message';
-  }, 2000);
+  }, STATUS_MESSAGE_DURATION);
 }
 
 /**
