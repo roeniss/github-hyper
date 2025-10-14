@@ -49,7 +49,14 @@ function setupEventListeners() {
 
   checkboxes.forEach(id => {
     const checkbox = document.getElementById(id);
-    checkbox.addEventListener('change', saveSettings);
+    checkbox.addEventListener('change', async () => {
+      try {
+        await saveSettings();
+      } catch (error) {
+        console.error('Error in change event handler:', error);
+        showStatus('Failed to save settings', 'error');
+      }
+    });
   });
 }
 
