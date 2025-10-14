@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Hyper - Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>GitHub Hyper</h1>
+      <p class="subtitle">Configure your GitHub experience</p>
+    </header>
+
+    <main>
+      <div class="option-group">
+        <div class="option-item">
+          <div class="option-info">
+            <label for="feature1">Feature 1</label>
+            <p class="description">Enable or disable feature 1</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="feature1" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="option-item">
+          <div class="option-info">
+            <label for="feature2">Feature 2</label>
+            <p class="description">Enable or disable feature 2</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="feature2" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="option-item">
+          <div class="option-info">
+            <label for="feature3">Feature 3</label>
+            <p class="description">Enable or disable feature 3</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="feature3" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="status-message" id="statusMessage"></div>
+    </main>
+
+    <footer>
+      <p>Changes are saved automatically</p>
+    </footer>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
