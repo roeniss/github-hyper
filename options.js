@@ -11,7 +11,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
 });
 
-// Load settings from Chrome storage
+/**
+ * Loads settings from Chrome sync storage and updates the UI.
+ * Retrieves saved preferences and applies them to the checkbox states.
+ * Falls back to default settings if none are saved.
+ *
+ * @returns {Promise<void>}
+ * @throws {Error} If storage access fails
+ */
 async function loadSettings() {
   try {
     const result = await chrome.storage.sync.get(defaultSettings);
@@ -26,7 +33,14 @@ async function loadSettings() {
   }
 }
 
-// Save settings to Chrome storage
+/**
+ * Saves current checkbox states to Chrome sync storage.
+ * Reads all feature toggle states from the DOM and persists them.
+ * Shows a success or error status message to the user.
+ *
+ * @returns {Promise<void>}
+ * @throws {Error} If storage write fails
+ */
 async function saveSettings() {
   try {
     const settings = {
@@ -43,7 +57,13 @@ async function saveSettings() {
   }
 }
 
-// Setup event listeners for all checkboxes
+/**
+ * Sets up event listeners for all feature toggle checkboxes.
+ * Attaches change event handlers that automatically save settings
+ * when any toggle is switched. Includes error handling for failed saves.
+ *
+ * @returns {void}
+ */
 function setupEventListeners() {
   const checkboxes = ['feature1', 'feature2', 'feature3'];
 
@@ -60,7 +80,16 @@ function setupEventListeners() {
   });
 }
 
-// Show status message to user
+/**
+ * Displays a temporary status message to the user.
+ * Automatically hides the message after 2 seconds.
+ * Clears any existing timeout to prevent race conditions when
+ * multiple messages are triggered in quick succession.
+ *
+ * @param {string} message - The message text to display
+ * @param {string} [type='success'] - The message type ('success' or 'error')
+ * @returns {void}
+ */
 let statusTimeout;
 function showStatus(message, type = 'success') {
   // Clear any existing timeout to prevent race conditions
