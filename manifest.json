@@ -14,5 +14,18 @@
   "options_page": "options.html",
   "permissions": [
     "storage"
+  ],
+  "optional_host_permissions": [
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://github.com/*",
+        "https://*.github.com/*"
+      ],
+      "js": ["scripts/absolute-time.js"],
+      "run_at": "document_end"
+    }
   ]
 }

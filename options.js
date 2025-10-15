@@ -1,11 +1,10 @@
 // Constants
 const STATUS_MESSAGE_DURATION = 2000; // milliseconds
 
-// Default settings - all features enabled by default
+// Default settings
 const defaultSettings = {
-  feature1: true,
-  feature2: true,
-  feature3: true
+  enableAbsoluteTime: true,
+  customDomains: []
 };
 
 // Load saved settings when the page loads
@@ -16,20 +15,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /**
  * Loads settings from Chrome sync storage and updates the UI.
- * Retrieves saved preferences and applies them to the checkbox states.
- * Falls back to default settings if none are saved.
- *
- * @returns {Promise<void>}
- * @throws {Error} If storage access fails
  */
 async function loadSettings() {
   try {
     const result = await chrome.storage.sync.get(defaultSettings);
 
-    // Update checkbox states based on saved settings
-    document.getElementById('feature1').checked = result.feature1;
-    document.getElementById('feature2').checked = result.feature2;
-    document.getElementById('feature3').checked = result.feature3;
+    // Update checkbox states
+    document.getElementById('enableAbsoluteTime').checked = result.enableAbsoluteTime;
+
+    // Load custom domains
+    renderDomainList(result.customDomains || []);
   } catch (error) {
     console.error('Error loading settings:', error);
     showStatus('Error loading settings', 'error');
@@ -37,21 +32,10 @@ async function loadSettings() {
 }
 
 /**
- * Saves current checkbox states to Chrome sync storage.
- * Reads all feature toggle states from the DOM and persists them.
- * Shows a success or error status message to the user.
- *
- * @returns {Promise<void>}
- * @throws {Error} If storage write fails
+ * Saves settings to Chrome sync storage.
  */
-async function saveSettings() {
+async function saveSettings(settings) {
   try {
-    const settings = {
-      feature1: document.getElementById('feature1').checked,
-      feature2: document.getElementById('feature2').checked,
-      feature3: document.getElementById('feature3').checked
-    };
-
     await chrome.storage.sync.set(settings);
     showStatus('Settings saved!', 'success');
   } catch (error) {
@@ -61,67 +45,7 @@ async function saveSettings() {
 }
 
 /**
- * Sets up event listeners for all feature toggle checkboxes.
- * Attaches change event handlers that automatically save settings
- * when any toggle is switched. Includes error handling for failed saves.
- *
- * @returns {void}
- */
-function setupEventListeners() {
-  const checkboxes = ['feature1', 'feature2', 'feature3'];
-
-  checkboxes.forEach(id => {
-    const checkbox = document.getElementById(id);
-    checkbox.addEventListener('change', async () => {
-      try {
-        await saveSettings();
-      } catch (error) {
-        console.error('Error in change event handler:', error);
-        showStatus('Failed to save settings', 'error');
-      }
-    });
-  });
-}
-
-/**
- * Displays a temporary status message to the user.
- * Automatically hides the message after STATUS_MESSAGE_DURATION milliseconds.
- * Clears any existing timeout to prevent race conditions when
- * multiple messages are triggered in quick succession.
- *
- * @param {string} message - The message text to display
- * @param {string} [type='success'] - The message type ('success' or 'error')
- * @returns {void}
- */
-let statusTimeout;
-function showStatus(message, type = 'success') {
-  // Clear any existing timeout to prevent race conditions
-  if (statusTimeout) {
-    clearTimeout(statusTimeout);
-  }
-
-  const statusElement = document.getElementById('statusMessage');
-  statusElement.textContent = message;
-  statusElement.className = `status-message ${type} show`;
-
-  // Hide the message after specified duration
-  statusTimeout = setTimeout(() => {
-    statusElement.className = 'status-message';
-  }, STATUS_MESSAGE_DURATION);
-}
-
-/**
  * Gets current settings from Chrome storage.
- * This function can be used by content scripts or other extension scripts
- * to retrieve user preferences.
- *
- * @returns {Promise<Object>} Object containing all feature settings
- * @example
- * // In a content script:
- * const settings = await getSettings();
- * if (settings.feature1) {
- *   // Apply feature 1
- * }
  */
 async function getSettings() {
   try {
@@ -132,5 +56,167 @@ async function getSettings() {
   }
 }
 
-// Make getSettings available globally for other scripts
+/**
+ * Renders the list of custom domains.
+ */
+function renderDomainList(domains) {
+  const list = document.getElementById('customDomainsList');
+  list.innerHTML = '';
+
+  if (domains.length === 0) {
+    const emptyMessage = document.createElement('li');
+    emptyMessage.textContent = 'No custom domains added yet.';
+    emptyMessage.style.color = '#718096';
+    emptyMessage.style.fontSize = '14px';
+    emptyMessage.style.padding = '12px';
+    list.appendChild(emptyMessage);
+    return;
+  }
+
+  domains.forEach((domain, index) => {
+    const listItem = document.createElement('li');
+    listItem.className = 'domain-item';
+    listItem.setAttribute('role', 'listitem');
+
+    const domainSpan = document.createElement('span');
+    domainSpan.className = 'domain-name';
+    domainSpan.textContent = domain;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'btn-remove';
+    removeBtn.textContent = 'Remove';
+    removeBtn.setAttribute('aria-label', `Remove domain ${domain}`);
+    removeBtn.addEventListener('click', () => removeDomain(index));
+
+    listItem.appendChild(domainSpan);
+    listItem.appendChild(removeBtn);
+    list.appendChild(listItem);
+  });
+}
+
+/**
+ * Validates a domain string.
+ */
+function isValidDomain(domain) {
+  // Basic domain validation - allows alphanumeric, hyphens, dots
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-_.]*[a-zA-Z0-9]$/;
+  return domainRegex.test(domain) && domain.includes('.');
+}
+
+/**
+ * Adds a new custom domain.
+ */
+async function addDomain() {
+  const input = document.getElementById('customDomainInput');
+  const domain = input.value.trim().toLowerCase();
+
+  if (!domain) {
+    showStatus('Please enter a domain', 'error');
+    return;
+  }
+
+  if (!isValidDomain(domain)) {
+    showStatus('Invalid domain format', 'error');
+    return;
+  }
+
+  try {
+    const settings = await getSettings();
+    const domains = settings.customDomains || [];
+
+    if (domains.includes(domain)) {
+      showStatus('Domain already exists', 'error');
+      return;
+    }
+
+    domains.push(domain);
+    await saveSettings({ customDomains: domains });
+    renderDomainList(domains);
+    input.value = '';
+
+    // Request host permissions for the new domain
+    if (chrome.permissions) {
+      const newPermissions = {
+        origins: [`https://${domain}/*`]
+      };
+
+      try {
+        await chrome.permissions.request(newPermissions);
+      } catch (permError) {
+        console.warn('Could not request permissions for domain:', permError);
+        // Don't fail the whole operation if permissions can't be requested
+      }
+    }
+  } catch (error) {
+    console.error('Error adding domain:', error);
+    showStatus('Failed to add domain', 'error');
+  }
+}
+
+/**
+ * Removes a custom domain by index.
+ */
+async function removeDomain(index) {
+  try {
+    const settings = await getSettings();
+    const domains = settings.customDomains || [];
+
+    domains.splice(index, 1);
+
+    await saveSettings({ customDomains: domains });
+    renderDomainList(domains);
+  } catch (error) {
+    console.error('Error removing domain:', error);
+    showStatus('Failed to remove domain', 'error');
+  }
+}
+
+/**
+ * Sets up event listeners.
+ */
+function setupEventListeners() {
+  // Feature toggle
+  const absoluteTimeToggle = document.getElementById('enableAbsoluteTime');
+  absoluteTimeToggle.addEventListener('change', async () => {
+    try {
+      const settings = await getSettings();
+      settings.enableAbsoluteTime = absoluteTimeToggle.checked;
+      await saveSettings(settings);
+    } catch (error) {
+      console.error('Error saving toggle:', error);
+      showStatus('Failed to save settings', 'error');
+    }
+  });
+
+  // Domain management
+  const addDomainBtn = document.getElementById('addDomainBtn');
+  addDomainBtn.addEventListener('click', addDomain);
+
+  const domainInput = document.getElementById('customDomainInput');
+  domainInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      addDomain();
+    }
+  });
+}
+
+/**
+ * Displays a temporary status message.
+ */
+let statusTimeout;
+function showStatus(message, type = 'success') {
+  if (statusTimeout) {
+    clearTimeout(statusTimeout);
+  }
+
+  const statusElement = document.getElementById('statusMessage');
+  statusElement.textContent = message;
+  statusElement.className = `status-message ${type} show`;
+
+  statusTimeout = setTimeout(() => {
+    statusElement.className = 'status-message';
+  }, STATUS_MESSAGE_DURATION);
+}
+
+// Make getSettings available globally
 window.getSettings = getSettings;

@@ -1,0 +1,12 @@
+- add span "next" to the relative-time field, instead of "below" the tag.
+- add unit test framework, and make 100% coverage test on scripts/*, after split script functions to be testable. 
+  - add a pre-push hook to check test pass
+  - add workflow to check test pass
+- add second feature: open jetbrain link from every file, PR comment, etc.
+  - format: https://github.com/alanhe421/jetbrains-url-schemes#requirement (add this link in the comment as a reference)
+  - finding file and line number could be tricky
+  - line/column number stars with 0 - maybe 1-diff from github view
+  - need option page ofc
+- modify readme
+- modify manifest meta info
+- submit chrome extension
