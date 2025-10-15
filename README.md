@@ -9,3 +9,6 @@
 ## Features
 
 - **Absolute Time Display**: Converts GitHub's relative time (e.g., "2 hours ago") to absolute timestamps (e.g., "2024-03-15 10:30:45 UTC+9") for better time readability
+- **IDE Deep Links**: Open files directly in your JetBrains IDE from GitHub PR review comments with a single click
+- **Custom Domain Support**: Add enterprise GitHub or custom domain names via the options page
+- **Configurable**: Toggle features on/off through the extension options page
