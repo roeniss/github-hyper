@@ -6,17 +6,14 @@
 // the script will only auto-inject on those domains after a browser/extension reload
 // or when the user refreshes tabs on those domains.
 
-(function() {
-  'use strict';
+const PROCESSED_ATTR = 'data-gh-hyper-processed';
 
-  const PROCESSED_ATTR = 'data-gh-hyper-processed';
-
-  /**
-   * Formats ISO datetime string to localized format with UTC offset: yyyy-MM-dd HH:mm:ss UTC±H
-   * @param {string} isoString - ISO 8601 datetime string
-   * @returns {string} Formatted datetime string with timezone indicator
-   */
-  function formatDateTime(isoString) {
+/**
+ * Formats ISO datetime string to localized format with UTC offset: yyyy-MM-dd HH:mm:ss UTC±H
+ * @param {string} isoString - ISO 8601 datetime string
+ * @returns {string} Formatted datetime string with timezone indicator
+ */
+export function formatDateTime(isoString) {
     const date = new Date(isoString);
 
     const year = date.getFullYear();
@@ -34,11 +31,11 @@
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} UTC${sign}${offsetHours}`;
   }
 
-  /**
-   * Processes a relative-time element to add absolute time display
-   * @param {HTMLElement} relativeTimeElement - The <relative-time> element
-   */
-  function processRelativeTime(relativeTimeElement) {
+/**
+ * Processes a relative-time element to add absolute time display
+ * @param {HTMLElement} relativeTimeElement - The <relative-time> element
+ */
+export function processRelativeTime(relativeTimeElement) {
     // Skip if already processed
     if (relativeTimeElement.hasAttribute(PROCESSED_ATTR)) {
       return;
@@ -80,18 +77,18 @@
     }
   }
 
-  /**
-   * Processes all relative-time elements on the page
-   */
-  function processAllRelativeTimes() {
+/**
+ * Processes all relative-time elements on the page
+ */
+export function processAllRelativeTimes() {
     const relativeTimeElements = document.querySelectorAll('relative-time');
     relativeTimeElements.forEach(processRelativeTime);
   }
 
-  /**
-   * Initializes the MutationObserver to watch for dynamically added elements
-   */
-  function initObserver() {
+/**
+ * Initializes the MutationObserver to watch for dynamically added elements
+ */
+export function initObserver() {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
@@ -114,10 +111,10 @@
     });
   }
 
-  /**
-   * Initializes the absolute time feature if enabled in settings
-   */
-  async function init() {
+/**
+ * Initializes the absolute time feature if enabled in settings
+ */
+export async function init() {
     try {
       // Check if feature is enabled
       const settings = await chrome.storage.sync.get({ enableAbsoluteTime: true });
@@ -135,10 +132,11 @@
     }
   }
 
-  // Initialize when DOM is ready
+// Initialize when DOM is ready (skip in test environment)
+if (typeof process === 'undefined' || process.env.NODE_ENV !== 'test') {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
-})();
+}
