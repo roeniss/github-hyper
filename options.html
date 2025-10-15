@@ -17,55 +17,43 @@
     </header>
 
     <main>
-      <div class="option-group" role="region" aria-label="Feature toggles">
-        <div class="option-item">
-          <div class="option-info">
-            <label for="feature1">Feature 1</label>
-            <p class="description" id="feature1-desc">Enable or disable feature 1</p>
+      <section class="settings-section">
+        <h2>Features</h2>
+        <div class="option-group" role="region" aria-label="Feature toggles">
+          <div class="option-item">
+            <div class="option-info">
+              <label for="enableAbsoluteTime">Show Absolute Time</label>
+              <p class="description" id="enableAbsoluteTime-desc">Display absolute datetime (yyyy-MM-dd HH:mm:ss) below relative times</p>
+            </div>
+            <label class="toggle" aria-label="Toggle absolute time display">
+              <input
+                type="checkbox"
+                id="enableAbsoluteTime"
+                checked
+                aria-label="Absolute time toggle"
+                aria-describedby="enableAbsoluteTime-desc">
+              <span class="slider" aria-hidden="true"></span>
+            </label>
           </div>
-          <label class="toggle" aria-label="Toggle feature 1">
-            <input
-              type="checkbox"
-              id="feature1"
-              checked
-              aria-label="Feature 1 toggle"
-              aria-describedby="feature1-desc">
-            <span class="slider" aria-hidden="true"></span>
-          </label>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>Custom Domains</h2>
+        <p class="section-description">Add enterprise GitHub or custom domain names to enable features on those sites. Default domains (github.com, *.github.com) are always included.</p>
+        <p class="section-description" style="font-size: 12px; color: #e53e3e; margin-top: -8px;"><strong>Note:</strong> After adding a custom domain, you must reload any open tabs on that domain for the extension to take effect.</p>
+
+        <div class="domain-input-group">
+          <input
+            type="text"
+            id="customDomainInput"
+            placeholder="e.g., github.company.com"
+            aria-label="Custom domain input">
+          <button id="addDomainBtn" class="btn-primary">Add Domain</button>
         </div>
 
-        <div class="option-item">
-          <div class="option-info">
-            <label for="feature2">Feature 2</label>
-            <p class="description" id="feature2-desc">Enable or disable feature 2</p>
-          </div>
-          <label class="toggle" aria-label="Toggle feature 2">
-            <input
-              type="checkbox"
-              id="feature2"
-              checked
-              aria-label="Feature 2 toggle"
-              aria-describedby="feature2-desc">
-            <span class="slider" aria-hidden="true"></span>
-          </label>
-        </div>
-
-        <div class="option-item">
-          <div class="option-info">
-            <label for="feature3">Feature 3</label>
-            <p class="description" id="feature3-desc">Enable or disable feature 3</p>
-          </div>
-          <label class="toggle" aria-label="Toggle feature 3">
-            <input
-              type="checkbox"
-              id="feature3"
-              checked
-              aria-label="Feature 3 toggle"
-              aria-describedby="feature3-desc">
-            <span class="slider" aria-hidden="true"></span>
-          </label>
-        </div>
-      </div>
+        <ul id="customDomainsList" class="domains-list" role="list"></ul>
+      </section>
 
       <div
         class="status-message"
