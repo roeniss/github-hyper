@@ -1,5 +1,10 @@
 // GitHub Hyper - Absolute Time Display
 // Converts GitHub's relative time to absolute datetime format
+//
+// NOTE: This content script is injected based on the "matches" pattern in manifest.json.
+// While custom domains can be added in settings and permissions requested,
+// the script will only auto-inject on those domains after a browser/extension reload
+// or when the user refreshes tabs on those domains.
 
 (function() {
   'use strict';
@@ -7,9 +12,9 @@
   const PROCESSED_ATTR = 'data-gh-hyper-processed';
 
   /**
-   * Formats ISO datetime string to localized format: yyyy-MM-dd HH:mm:ss
+   * Formats ISO datetime string to localized format with UTC offset: yyyy-MM-dd HH:mm:ss UTC±H
    * @param {string} isoString - ISO 8601 datetime string
-   * @returns {string} Formatted datetime string
+   * @returns {string} Formatted datetime string with timezone indicator
    */
   function formatDateTime(isoString) {
     const date = new Date(isoString);
@@ -21,7 +26,12 @@
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    // Add UTC offset indicator
+    const offset = -date.getTimezoneOffset();
+    const sign = offset >= 0 ? '+' : '-';
+    const offsetHours = Math.floor(Math.abs(offset) / 60);
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} UTC${sign}${offsetHours}`;
   }
 
   /**
@@ -60,10 +70,11 @@
           absoluteTimeSpan,
           parent.nextSibling
         );
+        // Mark as processed only if insertion succeeded
+        relativeTimeElement.setAttribute(PROCESSED_ATTR, 'true');
+      } else {
+        console.warn('GitHub Hyper: Could not find parent for relative-time element');
       }
-
-      // Mark as processed
-      relativeTimeElement.setAttribute(PROCESSED_ATTR, 'true');
     } catch (error) {
       console.error('GitHub Hyper: Error processing relative-time element', error);
     }
