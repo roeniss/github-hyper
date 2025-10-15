@@ -33,10 +33,13 @@ async function loadSettings() {
 
 /**
  * Saves settings to Chrome sync storage.
+ * Merges partial settings with existing settings to prevent race conditions.
  */
-async function saveSettings(settings) {
+async function saveSettings(partialSettings) {
   try {
-    await chrome.storage.sync.set(settings);
+    const currentSettings = await chrome.storage.sync.get(defaultSettings);
+    const newSettings = { ...currentSettings, ...partialSettings };
+    await chrome.storage.sync.set(newSettings);
     showStatus('Settings saved!', 'success');
   } catch (error) {
     console.error('Error saving settings:', error);
@@ -98,9 +101,9 @@ function renderDomainList(domains) {
  * Validates a domain string.
  */
 function isValidDomain(domain) {
-  // Basic domain validation - allows alphanumeric, hyphens, dots
-  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-_.]*[a-zA-Z0-9]$/;
-  return domainRegex.test(domain) && domain.includes('.');
+  // More robust domain validation - prevents double dots, leading/trailing dots
+  const domainRegex = /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,}$/i;
+  return domainRegex.test(domain);
 }
 
 /**
@@ -179,9 +182,7 @@ function setupEventListeners() {
   const absoluteTimeToggle = document.getElementById('enableAbsoluteTime');
   absoluteTimeToggle.addEventListener('change', async () => {
     try {
-      const settings = await getSettings();
-      settings.enableAbsoluteTime = absoluteTimeToggle.checked;
-      await saveSettings(settings);
+      await saveSettings({ enableAbsoluteTime: absoluteTimeToggle.checked });
     } catch (error) {
       console.error('Error saving toggle:', error);
       showStatus('Failed to save settings', 'error');
