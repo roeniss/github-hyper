@@ -39,6 +39,50 @@
       </section>
 
       <section class="settings-section">
+        <h2>IDE Integration</h2>
+        <p class="section-description">Open files directly in your JetBrains IDE from GitHub PR review comments. Project name is automatically detected from the repository URL.</p>
+        <p class="section-description" style="font-size: 12px; color: #0969da; margin-top: -8px;">
+          <strong>Requirements:</strong> JetBrains Toolbox must be installed.
+          <a href="https://github.com/alanhe421/jetbrains-url-schemes" target="_blank" rel="noopener noreferrer">Learn more</a>
+        </p>
+
+        <div class="option-group" role="region" aria-label="IDE settings">
+          <div class="option-item">
+            <div class="option-info">
+              <label for="enableIDEDeepLink">Enable IDE Deep Links</label>
+              <p class="description" id="enableIDEDeepLink-desc">Show buttons to open files in your IDE from PR review comments</p>
+            </div>
+            <label class="toggle" aria-label="Toggle IDE deep links">
+              <input
+                type="checkbox"
+                id="enableIDEDeepLink"
+                checked
+                aria-label="IDE deep link toggle"
+                aria-describedby="enableIDEDeepLink-desc">
+              <span class="slider" aria-hidden="true"></span>
+            </label>
+          </div>
+
+          <div class="option-item" style="margin-top: 16px;">
+            <div class="option-info">
+              <label for="ideType">IDE Type</label>
+              <p class="description">Select your preferred JetBrains IDE</p>
+            </div>
+            <select id="ideType" aria-label="IDE type selector" style="padding: 8px 12px; border: 1px solid #d0d7de; border-radius: 6px; background: #ffffff; font-size: 14px; cursor: pointer;">
+              <option value="idea">IntelliJ IDEA</option>
+              <option value="web-storm">WebStorm</option>
+              <option value="pycharm">PyCharm</option>
+              <option value="php-storm">PhpStorm</option>
+              <option value="rider">Rider</option>
+              <option value="clion">CLion</option>
+              <option value="goland">GoLand</option>
+              <option value="rubymine">RubyMine</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="settings-section">
         <h2>Custom Domains</h2>
         <p class="section-description">Add enterprise GitHub or custom domain names to enable features on those sites. Default domains (github.com, *.github.com) are always included.</p>
         <p class="section-description" style="font-size: 12px; color: #e53e3e; margin-top: -8px;"><strong>Note:</strong> After adding a custom domain, you must reload any open tabs on that domain for the extension to take effect.</p>

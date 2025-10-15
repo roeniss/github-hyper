@@ -4,6 +4,8 @@ const STATUS_MESSAGE_DURATION = 2000; // milliseconds
 // Default settings
 const defaultSettings = {
   enableAbsoluteTime: true,
+  enableIDEDeepLink: true,
+  ideType: 'idea',
   customDomains: []
 };
 
@@ -22,6 +24,10 @@ async function loadSettings() {
 
     // Update checkbox states
     document.getElementById('enableAbsoluteTime').checked = result.enableAbsoluteTime;
+    document.getElementById('enableIDEDeepLink').checked = result.enableIDEDeepLink;
+
+    // Update IDE type selection
+    document.getElementById('ideType').value = result.ideType || 'idea';
 
     // Load custom domains
     renderDomainList(result.customDomains || []);
@@ -178,13 +184,34 @@ async function removeDomain(index) {
  * Sets up event listeners.
  */
 function setupEventListeners() {
-  // Feature toggle
+  // Feature toggles
   const absoluteTimeToggle = document.getElementById('enableAbsoluteTime');
   absoluteTimeToggle.addEventListener('change', async () => {
     try {
       await saveSettings({ enableAbsoluteTime: absoluteTimeToggle.checked });
     } catch (error) {
       console.error('Error saving toggle:', error);
+      showStatus('Failed to save settings', 'error');
+    }
+  });
+
+  const ideDeepLinkToggle = document.getElementById('enableIDEDeepLink');
+  ideDeepLinkToggle.addEventListener('change', async () => {
+    try {
+      await saveSettings({ enableIDEDeepLink: ideDeepLinkToggle.checked });
+    } catch (error) {
+      console.error('Error saving toggle:', error);
+      showStatus('Failed to save settings', 'error');
+    }
+  });
+
+  // IDE type selection
+  const ideTypeSelect = document.getElementById('ideType');
+  ideTypeSelect.addEventListener('change', async () => {
+    try {
+      await saveSettings({ ideType: ideTypeSelect.value });
+    } catch (error) {
+      console.error('Error saving IDE type:', error);
       showStatus('Failed to save settings', 'error');
     }
   });

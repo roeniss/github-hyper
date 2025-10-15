@@ -27,6 +27,15 @@
       "js": ["scripts/absolute-time.js"],
       "run_at": "document_end",
       "type": "module"
+    },
+    {
+      "matches": [
+        "https://github.com/*",
+        "https://*.github.com/*"
+      ],
+      "js": ["scripts/ide-deep-link.js"],
+      "run_at": "document_end",
+      "type": "module"
     }
   ]
 }

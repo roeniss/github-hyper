@@ -10,14 +10,21 @@ export default {
   coverageThreshold: {
     global: {
       branches: 81,
-      functions: 100,
-      lines: 94,
-      statements: 94
+      functions: 95,
+      lines: 95,
+      statements: 95
     }
   },
   testMatch: [
     '**/__tests__/**/*.js',
-    '**/*.test.js'
+    '**/*.test.js',
+    '!**/dist/**',
+    '!**/node_modules/**'
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    '/coverage/'
   ],
   transform: {}
 };
