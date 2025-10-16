@@ -12,3 +12,7 @@
 - **IDE Deep Links**: Open files directly in your JetBrains IDE from GitHub PR review comments with a single click
 - **Custom Domain Support**: Add enterprise GitHub or custom domain names via the options page
 - **Configurable**: Toggle features on/off through the extension options page
+
+## Future plan
+
+- If you need some features, please create an issue.
