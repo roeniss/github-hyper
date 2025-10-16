@@ -1,14 +1,13 @@
 {
   "private": true,
   "name": "github-hyper",
-  "description": "A basic browser extension example built with Extension.js. Perfect starting point for developers learning browser extension development with modern tooling.",
+  "description": "A Chrome extension that enhances GitHub's user interface with helpful features.",
   "version": "0.0.1",
   "license": "MIT",
   "type": "module",
   "author": {
-    "name": "Your Name",
-    "email": "your@email.com",
-    "url": "https://yourwebsite.com"
+    "name": "Roeniss Moon",
+    "email": "roeniss2@gmail.com"
   },
   "scripts": {
     "dev": "extension dev",

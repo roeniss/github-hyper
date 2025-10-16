@@ -3,14 +3,14 @@
   "manifest_version": 3,
   "version": "0.0.1",
   "name": "GitHub Hyper",
-  "description": "A basic browser extension example built with Extension.js. Perfect starting point for developers learning browser extension development with modern tooling.",
+  "description": "A Chrome extension that enhances GitHub's user interface with helpful features.",
   "icons": {
     "16": "images/icon_16.png",
     "32": "images/icon_32.png",
     "48": "images/icon_48.png",
     "128": "images/icon_128.png"
   },
-  "author": "Your Name",
+  "author": "Roeniss Moon",
   "options_page": "options.html",
   "permissions": [
     "storage"
@@ -25,8 +25,7 @@
         "https://*.github.com/*"
       ],
       "js": ["scripts/absolute-time.js"],
-      "run_at": "document_end",
-      "type": "module"
+      "run_at": "document_end"
     },
     {
       "matches": [
@@ -34,8 +33,7 @@
         "https://*.github.com/*"
       ],
       "js": ["scripts/ide-deep-link.js"],
-      "run_at": "document_end",
-      "type": "module"
+      "run_at": "document_end"
     }
   ]
 }
