@@ -9,7 +9,7 @@
 const PROCESSED_ATTR = 'data-gh-hyper-processed';
 
 /**
- * Formats ISO datetime string to localized format with UTC offset: yyyy-MM-dd HH:mm:ss UTC±H
+ * Formats ISO datetime string to localized format with UTC offset: yyyy-MM-dd HH:mm:ss (UTC format is hidden)
  * @param {string} isoString - ISO 8601 datetime string
  * @returns {string} Formatted datetime string with timezone indicator
  */
@@ -23,12 +23,7 @@ export function formatDateTime(isoString) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    // Add UTC offset indicator
-    const offset = -date.getTimezoneOffset();
-    const sign = offset >= 0 ? '+' : '-';
-    const offsetHours = Math.floor(Math.abs(offset) / 60);
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} UTC${sign}${offsetHours}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
 /**

@@ -12,41 +12,34 @@ describe('formatDateTime', () => {
     const isoString = '2024-03-15T10:30:45Z';
     const result = formatDateTime(isoString);
     // Just check format, not exact time since timezone varies
-    expect(result).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} UTC[+-]\d+$/);
+    expect(result).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/);
   });
 
   it('should handle single digit months and days', () => {
     const isoString = '2024-01-05T09:08:07Z';
     const result = formatDateTime(isoString);
-    expect(result).toMatch(/^2024-01-05 \d{2}:\d{2}:\d{2} UTC[+-]\d+$/);
+    expect(result).toMatch(/^2024-01-05 \d{2}:\d{2}:\d{2}$/);
   });
 
   it('should format with correct pattern', () => {
     const isoString = '2024-03-15T10:30:45Z';
     const result = formatDateTime(isoString);
     const parts = result.split(' ');
-    expect(parts).toHaveLength(3);
+    expect(parts).toHaveLength(2);
     expect(parts[0]).toMatch(/^\d{4}-\d{2}-\d{2}$/); // Date
     expect(parts[1]).toMatch(/^\d{2}:\d{2}:\d{2}$/); // Time
-    expect(parts[2]).toMatch(/^UTC[+-]\d+$/); // UTC offset
   });
 
   it('should handle midnight time', () => {
     const isoString = '2024-03-15T00:00:00Z';
     const result = formatDateTime(isoString);
-    expect(result).toMatch(/^2024-03-15 \d{2}:\d{2}:\d{2} UTC[+-]\d+$/);
+    expect(result).toMatch(/^2024-03-15 \d{2}:\d{2}:\d{2}$/);
   });
 
   it('should handle end of day time', () => {
     const isoString = '2024-03-15T23:59:59Z';
     const result = formatDateTime(isoString);
-    expect(result).toMatch(/^2024-03-1[56] \d{2}:\d{2}:\d{2} UTC[+-]\d+$/);
-  });
-
-  it('should include UTC offset indicator', () => {
-    const isoString = '2024-03-15T10:30:45Z';
-    const result = formatDateTime(isoString);
-    expect(result).toContain('UTC');
+    expect(result).toMatch(/^2024-03-1[56] \d{2}:\d{2}:\d{2}$/);
   });
 });
 
@@ -113,7 +106,7 @@ describe('processRelativeTime', () => {
 
     const insertedSpan = mockGrandParent.insertBefore.mock.calls[0][0];
     expect(insertedSpan.className).toBe('gh-hyper-absolute-time');
-    expect(insertedSpan.textContent).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} UTC[+-]\d+$/);
+    expect(insertedSpan.textContent).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/);
     expect(insertedSpan.style.display).toBe('block');
     expect(insertedSpan.style.fontSize).toBe('10px');
     // Color is converted from hex to rgb by JSDOM
