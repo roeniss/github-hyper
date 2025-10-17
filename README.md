@@ -1,5 +1,7 @@
+# GitHub Hyper
+
 <div align="center">
-  <img src="images/logo.webp" alt="GitHub Hyper Logo" width="128" height="128">
+  <img src="images/screenshot.png" alt="GitHub Hyper Logo">
 
   # GitHub Hyper
 
